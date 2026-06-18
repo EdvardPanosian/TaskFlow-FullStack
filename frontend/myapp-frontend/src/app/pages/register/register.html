@@ -1,0 +1,21 @@
+<div class="page">
+  <div class="register-card">
+    <h1>Register Form</h1>
+
+    <label>Username:</label>
+    <input type="text"
+           [(ngModel)]="username" />
+
+    <label>Password:</label>
+    <input type="password"
+           [(ngModel)]="password" />
+
+    <button class="register-main-btn" (click)="register()">
+      Register
+    </button>
+
+    <button class="login-btn" (click)="goToLogin()">
+      Already have an account? Login
+    </button>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<div class="page">
+  <div class="login-card">
+    <h1>Login Form</h1>
+
+    <label>Username:</label>
+    <input type="text"
+           [(ngModel)]="username" />
+
+    <label>Password:</label>
+    <input type="password"
+           [(ngModel)]="password" />
+
+    <button class="login-btn" (click)="login()">
+      Login
+    </button>
+
+    <button class="register-btn" (click)="goToRegister()">
+      Create new account
+    </button>
+  </div>
+</div>

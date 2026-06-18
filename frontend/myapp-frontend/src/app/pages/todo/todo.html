@@ -1,0 +1,39 @@
+<div class="todo-container">
+
+  <div class="header">
+    <h2>Task Manager</h2>
+
+    <button class="logout-btn" (click)="logout()">
+      Logout
+    </button>
+  </div>
+
+  <div class="add-task">
+    <input type="text"
+           placeholder="Enter task..."
+           [(ngModel)]="newTask" />
+
+    <button (click)="addTask()">Add</button>
+  </div>
+
+  <ul>
+    @for (task of tasks; track task.id) {
+    <li>
+      <span [class.done]="task.isDone">
+        {{ task.title }}
+      </span>
+
+      <div class="actions">
+        <button (click)="markDone(task.id)">
+          Done
+        </button>
+
+        <button (click)="deleteTask(task.id)">
+          Delete
+        </button>
+      </div>
+    </li>
+    }
+  </ul>
+
+</div>
