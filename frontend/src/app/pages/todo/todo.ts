@@ -13,15 +13,29 @@ import { Auth } from '../../services/auth';
 export class Todo implements OnInit {
   tasks: TodoItem[] = [];
   newTask = '';
+  searchText = '';
+
+  editingTaskId: number | null = null;
+  editingTitle = '';
 
   constructor(
     private todoService: TodoService,
     private authService: Auth,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.loadTasks();
+  }
+
+  get filteredTasks(): TodoItem[] {
+    if (!this.searchText.trim()) {
+      return this.tasks;
+    }
+
+    return this.tasks.filter(task =>
+      task.title.toLowerCase().includes(this.searchText.toLowerCase())
+    );
   }
 
   loadTasks(): void {
@@ -41,9 +55,7 @@ export class Todo implements OnInit {
       return;
     }
 
-    this.todoService.create({
-      title: this.newTask
-    }).subscribe({
+    this.todoService.create({ title: this.newTask }).subscribe({
       next: () => {
         this.newTask = '';
         this.loadTasks();
@@ -56,17 +68,40 @@ export class Todo implements OnInit {
 
   markDone(id: number): void {
     this.todoService.markDone(id).subscribe({
+      next: () => this.loadTasks()
+    });
+  }
+
+  startEdit(task: TodoItem): void {
+    this.editingTaskId = task.id;
+    this.editingTitle = task.title;
+  }
+
+  cancelEdit(): void {
+    this.editingTaskId = null;
+    this.editingTitle = '';
+  }
+
+  saveEdit(id: number): void {
+    if (!this.editingTitle.trim()) {
+      return;
+    }
+
+    this.todoService.update(id, this.editingTitle).subscribe({
       next: () => {
+        this.editingTaskId = null;
+        this.editingTitle = '';
         this.loadTasks();
+      },
+      error: () => {
+        alert('Failed to update task');
       }
     });
   }
 
   deleteTask(id: number): void {
     this.todoService.delete(id).subscribe({
-      next: () => {
-        this.loadTasks();
-      }
+      next: () => this.loadTasks()
     });
   }
 

@@ -54,6 +54,17 @@ namespace MyApp.Controllers
             return Ok(task);
         }
 
+        [HttpPut("{id}/edit")]
+        public async Task<IActionResult> Update(int id, UpdateToDoDto dto)
+        {
+            var task = await _service.UpdateAsync(id, dto);
+
+            if (task == null)
+                return NotFound();
+
+            return Ok(task);
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

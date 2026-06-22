@@ -16,22 +16,48 @@
     <button (click)="addTask()">Add</button>
   </div>
 
+  <div class="search-box">
+    <input type="text"
+           placeholder="Search tasks..."
+           [(ngModel)]="searchText">
+  </div>
+
   <ul>
-    @for (task of tasks; track task.id) {
+    @for (task of filteredTasks; track task.id) {
     <li>
+      @if (editingTaskId === task.id) {
+      <input class="edit-input"
+             type="text"
+             [(ngModel)]="editingTitle" />
+
+      <div class="actions">
+        <button class="save-btn" (click)="saveEdit(task.id)">
+          Save
+        </button>
+
+        <button class="cancel-btn" (click)="cancelEdit()">
+          Cancel
+        </button>
+      </div>
+      } @else {
       <span [class.done]="task.isDone">
         {{ task.title }}
       </span>
 
       <div class="actions">
-        <button (click)="markDone(task.id)">
+        <button class="done-btn" (click)="markDone(task.id)">
           Done
         </button>
 
-        <button (click)="deleteTask(task.id)">
+        <button class="edit-btn" (click)="startEdit(task)">
+          Edit
+        </button>
+
+        <button class="delete-btn" (click)="deleteTask(task.id)">
           Delete
         </button>
       </div>
+      }
     </li>
     }
   </ul>

@@ -38,6 +38,12 @@ export class TodoService {
     });
   }
 
+  update(id: number, title: string): Observable<TodoItem> {
+    return this.http.put<TodoItem>(`${this.apiUrl}/${id}/edit`, { title }, {
+      headers: this.getAuthHeaders(),
+    });
+  }
+
   delete(id: number): Observable<string> {
     return this.http.delete(`${this.apiUrl}/${id}`, {
       headers: this.getAuthHeaders(),

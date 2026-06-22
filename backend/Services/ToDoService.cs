@@ -73,6 +73,25 @@ namespace MyApp.Services
             };
         }
 
+        public async Task<ToDoDto?> UpdateAsync(int id, UpdateToDoDto dto)
+        {
+            var task = await _context.Tasks.FindAsync(id);
+
+            if (task == null)
+                return null;
+
+            task.Title = dto.Title;
+
+            await _context.SaveChangesAsync();
+
+            return new ToDoDto
+            {
+                Id = task.Id,
+                Title = task.Title,
+                IsDone = task.IsDone
+            };
+        }
+
         public async Task<bool> DeleteAsync(int id)
         {
             var task = await _context.Tasks.FindAsync(id);
